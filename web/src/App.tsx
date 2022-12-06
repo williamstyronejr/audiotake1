@@ -1,25 +1,101 @@
-import { FC, ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  ReactNode,
+  useCallback,
+  MouseEvent,
+  useRef,
+  useState,
+} from "react";
 
-const Audio: FC<{}> = ({}) => {
+const Audio: FC<{ src: string; description: string }> = ({
+  src,
+  description,
+}) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [seeking, setSeeking] = useState(false);
 
   const onClick = useCallback(() => {
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
+        setPlaying(true);
       } else {
         audioRef.current.pause();
+        setPlaying(false);
       }
     }
   }, [audioRef]);
 
+  const onSeeking = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+    setCurrentTime(parseFloat(evt.target.value));
+  }, []);
+
+  const onSeekingRelease = (
+    evt: MouseEvent<HTMLInputElement, globalThis.MouseEvent>
+  ) => {
+    setSeeking(false);
+    if (audioRef.current) {
+      audioRef.current.currentTime = parseFloat(evt.currentTarget.value);
+      if (!playing) {
+        setPlaying(true);
+        audioRef.current.play();
+      }
+    }
+  };
+  const onSeekingClick = () => {
+    setSeeking(true);
+    if (playing) {
+      setPlaying(false);
+      audioRef.current?.pause();
+    }
+  };
+
+  const onDurationChange = useCallback(() => {
+    setDuration(audioRef.current?.duration || 0);
+  }, [audioRef]);
+
+  const onTimeUpdate = useCallback(() => {
+    if (!seeking) setCurrentTime(audioRef.current?.currentTime || 0);
+  }, [seeking, audioRef]);
+
+  const onEnd = useCallback(() => {
+    setPlaying(false);
+  }, []);
+
   return (
-    <div className="bg-[#272727] ">
-      <button type="button" className="" onClick={onClick}>
-        Pl
+    <div className="px-4 py-4 rounded-lg bg-dark-off">
+      <button type="button" className="mr-2 text-2xl" onClick={onClick}>
+        {playing ? (
+          <i className="fas fa-pause" />
+        ) : (
+          <i className="fas fa-play" />
+        )}
       </button>
 
-      <audio ref={audioRef} />
+      <input
+        type="range"
+        min="0"
+        max={duration}
+        value={currentTime}
+        onChange={onSeeking}
+        onMouseDown={onSeekingClick}
+        onMouseUp={onSeekingRelease}
+        onDurationChange={onDurationChange}
+      />
+
+      <div className="mt-2 text-slate-300">{description}</div>
+
+      <audio
+        ref={audioRef}
+        src={src}
+        onEnded={onEnd}
+        onTimeUpdate={onTimeUpdate}
+        onDurationChange={onDurationChange}
+      />
     </div>
   );
 };
@@ -33,22 +109,18 @@ const Card = ({
   body: string;
   children?: ReactNode;
 }) => (
-  <div className="py-4">
-    <div className=""></div>
-
-    <div>
-      <h4 className="font-bold text-4xl text-center md:text-left mb-6">
-        {heading}
-      </h4>
-      <div className="">{body}</div>
-    </div>
+  <div className="mb-4 px-4 py-6 h-80 rounded-lg bg-dark-off">
+    <h4 className="font-bold text-2xl text-center md:text-left mb-6">
+      {heading}
+    </h4>
+    <div className="">{body}</div>
   </div>
 );
 
 function App() {
   return (
     <section className="h-full pt-8">
-      <header className=" text-center">
+      <header className="text-center">
         <h2 className="font-bold text-4xl my-4">
           Nature voices for Characters
         </h2>
@@ -58,24 +130,29 @@ function App() {
         </p>
       </header>
 
-      <div className="">
-        <Audio />
+      <div className="flex flex-row flex-wrap px-2 py-8">
+        <Audio
+          description="Woman, Calm"
+          src="https://www.soundeffectsplus.com/uploads/prod_audio/41747450_combine-harvester-operating-01.mp3"
+        />
       </div>
 
-      <Card
-        heading="Text to Speech"
-        body="With text to speech, immediately see your AI voice actors update recording."
-      />
+      <div className="flex flex-col flex-nowrap md:flex-row px-4">
+        <Card
+          heading="Text to Speech"
+          body="With text to speech, immediately see your AI voice actors update recording."
+        />
 
-      <Card
-        heading="Voice Styles"
-        body="With our wide range of presents voices controlling for emotions and pitch to cast the best actor for your game."
-      />
+        <Card
+          heading="Voice Styles"
+          body="With our wide range of presents voices controlling for emotions and pitch to cast the best actor for your game."
+        />
 
-      <Card
-        heading="Clone Voices"
-        body="Can't find a the perfect voice or need accents not available? Using our AI, clone your voice to create a new actor just for your use."
-      />
+        <Card
+          heading="Clone Voices"
+          body="Can't find a the perfect voice or need accents not available? Using our AI, clone your voice to create a new actor just for your use."
+        />
+      </div>
     </section>
   );
 }
