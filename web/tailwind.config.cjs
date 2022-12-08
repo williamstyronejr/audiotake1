@@ -5,8 +5,10 @@ module.exports = {
     extend: {
       colors: {
         "dark-off": "#272727",
+        "nav-menu": "#333333",
       },
       gridTemplateColumns: {
+        audio: "repeat(auto-fit, minmax(200px, 1fr))",
         cards: "repeat(auto-fit, minmax(250px, 1fr))",
       },
     },

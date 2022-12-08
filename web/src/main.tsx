@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import useDetectClick from "./useDetectoutside";
 
 const NavLink = ({ to, text }: { to: string; text: string }) => (
-  <li className="mr-2">
+  <li className="mb-2 w-full md:mb-0 md:mr-2 py-1 px-2 rounded-lg font-light hover:bg-white/5 transition-colors">
     <a href={to}>{text}</a>
   </li>
 );
@@ -30,7 +31,8 @@ const FooterList = ({
 );
 
 const Nav = () => {
-  const [menu, setMenu] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useDetectClick({ ref });
 
   return (
     <nav className={`relative`}>
@@ -38,19 +40,22 @@ const Nav = () => {
         className={`md:hidden h-screen w-screen absolute z-10 left-0 top-0 bg-black/20`}
       />
       <button
-        className="md:hidden"
+        className="md:hidden z-40"
         type="button"
-        onClick={() => setMenu((old) => !old)}
+        onClick={() => setVisible((old) => !old)}
       >
         B
       </button>
 
       <ul
         className={`${
-          menu ? "h-full absolute z-20 right-0" : "hidden"
-        } md:flex flex-row flex-nowrap `}
+          !visible
+            ? "absolute z-20 right-0 bg-nav-menu px-6 pt-1 rounded-lg "
+            : "hidden"
+        } md:flex flex-row flex-nowrap md:bg-transparent `}
       >
         <NavLink to="/features" text="Features" />
+        <NavLink to="/pricing" text="Pricing" />
         <NavLink to="/signin" text="Signin" />
       </ul>
     </nav>
