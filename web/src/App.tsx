@@ -109,7 +109,7 @@ const Card = ({
   body: string;
   children?: ReactNode;
 }) => (
-  <div className="mb-4 px-4 py-6 h-80 rounded-lg bg-dark-off">
+  <div className="px-4 py-6 h-80 rounded-lg bg-dark-off">
     <h4 className="font-bold text-2xl text-center md:text-left mb-6">
       {heading}
     </h4>
@@ -119,7 +119,7 @@ const Card = ({
 
 function App() {
   return (
-    <section className="h-full pt-8">
+    <section className="h-full pt-8 max-w-7xl mx-auto">
       <header className="text-center">
         <h2 className="font-bold text-4xl my-4">
           Nature voices for Characters
@@ -137,7 +137,7 @@ function App() {
         />
       </div>
 
-      <div className="flex flex-col flex-nowrap md:flex-row px-4">
+      <div className="grid grid-cols-cards gap-4 px-4 items-center">
         <Card
           heading="Text to Speech"
           body="With text to speech, immediately see your AI voice actors update recording."

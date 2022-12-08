@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         "dark-off": "#272727",
       },
+      gridTemplateColumns: {
+        cards: "repeat(auto-fit, minmax(250px, 1fr))",
+      },
     },
   },
   plugins: [],
