@@ -11,6 +11,9 @@ module.exports = {
         audio: "repeat(auto-fit, minmax(200px, 1fr))",
         cards: "repeat(auto-fit, minmax(250px, 1fr))",
       },
+      transitionProperty: {
+        width: "width",
+      },
     },
   },
   plugins: [],

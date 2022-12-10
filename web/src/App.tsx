@@ -119,8 +119,8 @@ const Card = ({
 
 function App() {
   return (
-    <section className="h-full pt-8 max-w-7xl mx-auto">
-      <header className="text-center py-10">
+    <section className="h-full pt-8 px-2 md:px-0 max-w-7xl mx-auto">
+      <header className="text-center py-20">
         <h2 className="font-bold text-4xl my-4">
           Nature voices for Characters
         </h2>
@@ -134,7 +134,7 @@ function App() {
         <p className="text-center font-semibold text-xl text-slate-300">
           "Hello, this is OneTake Audio."
         </p>
-        <div className="grid grid-cols-audio gap-y-4 gap-x-2 px-2 py-8">
+        <div className="grid grid-cols-audio gap-y-4 gap-x-2 max-w-4xl mx-auto px-2 py-8">
           <Audio
             description="Woman, Calm"
             src="https://www.soundeffectsplus.com/uploads/prod_audio/41747450_combine-harvester-operating-01.mp3"
@@ -176,6 +176,7 @@ function App() {
           />
         </div>
       </div>
+
       <div className="grid grid-cols-cards gap-4 px-4 items-center">
         <Card
           heading="Text to Speech"
