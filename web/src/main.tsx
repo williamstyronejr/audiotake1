@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
@@ -16,7 +16,7 @@ const FooterList = ({
   list,
   heading,
 }: {
-  list: Array<any>;
+  list: Array<{ text: string; to: string }>;
   heading: string;
 }) => (
   <div className="">
@@ -24,7 +24,7 @@ const FooterList = ({
 
     <div className="">
       {list.map((item) => (
-        <a className="font-light" href={item.to}>
+        <a className="font-light" key={`link-${item.text}`} href={item.to}>
           {item.text}
         </a>
       ))}
@@ -36,43 +36,57 @@ const Nav = () => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(true);
 
+  useEffect(() => {
+    const eventHandler = (evt: KeyboardEvent) => {
+      if (evt.key === "Escape") setVisible(false);
+    };
+
+    document.addEventListener("keyup", eventHandler);
+    return () => {
+      document.removeEventListener("keyup", eventHandler);
+    };
+  }, []);
+
   return (
-    <nav className={`relative`}>
+    <nav className="relative">
       <div
         className={`${
-          visible ? "" : "hidden"
+          visible ? "block" : "hidden"
         } md:hidden h-screen w-screen fixed z-10 right-0 top-0 bg-black/20`}
         onClick={() => setVisible(false)}
       />
-      <button
-        className="md:hidden relative z-40 w-6"
-        type="button"
-        onClick={() => setVisible((old) => !old)}
-        aria-label="menu"
-      >
-        <span
-          className={`block h-0.5 w-full bg-white transition-transform origin-top-left ${
-            visible ? "rotate-45 -translate-y-1" : ""
-          }`}
-        ></span>
-        <span
-          className={`block h-0.5 w-full ${
-            visible ? "w-0" : "w-full"
-          } bg-white my-1 transition-width`}
-        ></span>
-        <span
-          className={`block h-0.5 w-full bg-white transition-transform origin-bottom-left ${
-            visible ? "-rotate-45" : ""
-          }`}
-        ></span>
-      </button>
+
+      <div className="rounded-full px-2 py-2 -mt-2 hover:bg-white/20 transition-colors">
+        <button
+          type="button"
+          aria-label="menu"
+          onClick={() => setVisible((old) => !old)}
+          className="md:hidden relative z-40 w-6 outline-none"
+        >
+          <span
+            className={`block h-0.5 w-full bg-white transition-transform origin-top-left ${
+              visible ? "rotate-45 -translate-y-0.5 translate-x-1" : ""
+            }`}
+          />
+          <span
+            className={`block h-0.5 w-full ${
+              visible ? "w-0" : "w-full"
+            } bg-white my-1 transition-width`}
+          />
+          <span
+            className={`block h-0.5 w-full bg-white transition-transform origin-bottom-left ${
+              visible ? "-rotate-45 translate-x-1 translate-y-0.5" : ""
+            }`}
+          />
+        </button>
+      </div>
 
       <ul
         className={`${
           visible
-            ? "absolute z-20 right-0 bg-nav-menu px-2 pt-1 w-40 rounded-lg "
+            ? "absolute z-20 mt-3 right-0 bg-nav-menu px-2 pt-1 w-40 rounded-lg"
             : "hidden"
-        } md:flex flex-row flex-nowrap md:bg-transparent md:p-0 md:w-auto md:rounded-none`}
+        } md:flex flex-row flex-nowrap md:bg-transparent md:p-0 md:mt-0 md:w-auto md:rounded-none`}
       >
         <NavLink to="/features" text="Features" />
         <NavLink to="/pricing" text="Pricing" />
@@ -84,7 +98,7 @@ const Nav = () => {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <header className="flex flex-row flex-nowrap justify-between py-4 px-2 max-w-7xl">
+    <header className="flex flex-row flex-nowrap justify-between p-4">
       <div className="">Title</div>
       <Nav />
     </header>
