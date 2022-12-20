@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePaage";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import "./index.css";
 import useDetectClick from "./useDetectoutside";
 import FeaturesPage from "./pages/FeaturesPage";
@@ -104,7 +104,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <header className="flex flex-row flex-nowrap justify-between p-4">
-        <div className="">Title</div>
+        <Link className="" to="/">
+          OneTake
+        </Link>
+
         <Nav />
       </header>
 
