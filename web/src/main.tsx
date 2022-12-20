@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePaage";
 import "./index.css";
 import useDetectClick from "./useDetectoutside";
+import FeaturesPage from "./pages/FeaturesPage";
+import PricingPage from "./pages/PricingPage";
+import SigninPage from "./pages/SigninPage";
 
 const NavLink = ({ to, text }: { to: string; text: string }) => (
   <li className="mb-2 w-full md:mb-0 md:mr-2 py-1 px-2 rounded-lg font-light hover:bg-white/5 transition-colors">
@@ -98,13 +102,20 @@ const Nav = () => {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <header className="flex flex-row flex-nowrap justify-between p-4">
-      <div className="">Title</div>
-      <Nav />
-    </header>
+    <BrowserRouter>
+      <header className="flex flex-row flex-nowrap justify-between p-4">
+        <div className="">Title</div>
+        <Nav />
+      </header>
 
-    <main className="flex-grow">
-      <App />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/signin" element={<SigninPage />} />
+        </Routes>
+      </main>
 
       <footer className="py-2 px-4 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
@@ -128,6 +139,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </div>
         </div>
       </footer>
-    </main>
+    </BrowserRouter>
   </React.StrictMode>
 );
