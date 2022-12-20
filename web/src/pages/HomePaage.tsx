@@ -117,7 +117,7 @@ const Card = ({
   </div>
 );
 
-function App() {
+function HomePage() {
   return (
     <section className="h-full pt-8 px-2 md:px-0 max-w-7xl mx-auto">
       <header className="text-center py-20">
@@ -197,4 +197,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
