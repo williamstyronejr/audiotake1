@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePaage";
 import "./index.css";
 import useDetectClick from "./useDetectoutside";
 import FeaturesPage from "./pages/FeaturesPage";
 import PricingPage from "./pages/PricingPage";
 import SigninPage from "./pages/SigninPage";
+import FaqPage from "./pages/FAQPage";
 
 const NavLink = ({ to, text }: { to: string; text: string }) => (
   <li className="mb-2 w-full md:mb-0 md:mr-2 py-1 px-2 rounded-lg font-light hover:bg-white/5 transition-colors">
@@ -28,7 +29,11 @@ const FooterList = ({
 
     <div className="">
       {list.map((item) => (
-        <a className="font-light" key={`link-${item.text}`} href={item.to}>
+        <a
+          className="block font-light my-3"
+          key={`link-${item.text}`}
+          href={item.to}
+        >
           {item.text}
         </a>
       ))}
@@ -38,7 +43,7 @@ const FooterList = ({
 
 const Nav = () => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const eventHandler = (evt: KeyboardEvent) => {
@@ -104,7 +109,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <header className="flex flex-row flex-nowrap justify-between p-4">
-        <div className="">Title</div>
+        <div className="">
+          <Link to="/" className="font-semibold">
+            OneTake
+          </Link>
+        </div>
         <Nav />
       </header>
 
@@ -114,6 +123,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/signin" element={<SigninPage />} />
+          <Route path="/faq" element={<FaqPage />} />
         </Routes>
       </main>
 
@@ -128,6 +138,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <FooterList
                 heading="Product"
                 list={[{ to: "/faq", text: "FAQ" }]}
+              />
+            </div>
+
+            <div className="md:w-60">
+              <FooterList
+                heading="Downloads"
+                list={[
+                  { to: "/", text: "MacOS" },
+                  { to: "/", text: "Windows" },
+                  { to: "/", text: "Linux" },
+                ]}
               />
             </div>
           </div>
