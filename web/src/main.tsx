@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePaage";
+import HomePage from "./pages/HomePage";
 import "./index.css";
 import useDetectClick from "./useDetectoutside";
 import FeaturesPage from "./pages/FeaturesPage";
